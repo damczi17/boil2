@@ -1,4 +1,5 @@
 import numpy as np
+from mainWindow import mainWindow
 
 def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
     transport_plan = np.zeros((len(koszty_transportu), len(koszty_transportu[0])))
@@ -62,7 +63,7 @@ def task_check(podaz,popyt):
 
 def main():
 
-    
+    mainWindow()
 
     #Niezbilansowane https://docplayer.pl/112982574-Rozwiazanie-zadania-1-krok-tym-razem-naszym-celem-jest-nie-tak-jak-w-przypadku-typowego-zadania-transportowego.html?fbclid=IwAR3gNDxifXaewfWMn8DVIJh-tJHKMFF43JYZbBDcdV5thCl9pukAUrxGUFU
     # D = 2
