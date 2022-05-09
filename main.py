@@ -1,7 +1,52 @@
 import numpy as np
 
+
+def transport_cost(koszty_transportu, plan_transportu):
+    koszt_transportu = 0
+
+    for i in range(len(koszty_transportu)):
+        for j in range(len(koszty_transportu[0])):
+            koszt_transportu = koszt_transportu + (koszty_transportu[i][j] * plan_transportu[i][j])
+    
+    return koszt_transportu
+
+def equation_solve(alfa, i, beta, j, koszty_transportu):
+    if(alfa[i] == 0):
+        alfa[i] = -1*(beta[j]+koszty_transportu)
+    if(beta[j] == 0):
+        beta[j] = -1*(alfa[i]+koszty_transportu)
+    
+    
+def optimal_solution(koszty_transportu, plan_transportu):
+    alfa = np.zeros(len(koszty_transportu))
+    beta = np.zeros(len(koszty_transportu[0]))
+
+    for i in range(len(koszty_transportu)):
+        for j in range(len(koszty_transportu[0])):
+            if(plan_transportu[i][j] != 0):
+                if(i == 0):
+                    beta[j] = -1 *  koszty_transportu[i][j]
+                else:
+                    equation_solve(alfa, i, beta, j, koszty_transportu[i][j])
+
+    print("Alfa:")
+    print(alfa)
+    print("Beta:")
+    print(beta)
+
+    wskazniki_optymalnosci = np.zeros((len(koszty_transportu), len(koszty_transportu[0])))
+
+    for i in range(len(wskazniki_optymalnosci)):
+        for j in range(len(wskazniki_optymalnosci[0])):
+            if(plan_transportu[i][j] == 0):
+                wskazniki_optymalnosci[i][j] = koszty_transportu[i][j] + alfa[i] + beta[j]
+    
+    print("Wskazniki optymalnosci:")
+    print(wskazniki_optymalnosci)
+
+
 def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
-    transport_plan = np.zeros((len(koszty_transportu), len(koszty_transportu[0])))
+    plan_transportu = np.zeros((len(koszty_transportu), len(koszty_transportu[0])))
     tmp_podaz, tmp_popyt = podaz, popyt
 
     if(len(podaz) != len(koszty_transportu) or len(popyt) != len(koszty_transportu[0])):
@@ -12,34 +57,22 @@ def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popy
     for i in range(len(koszty_transportu)):
         for j in range(len(koszty_transportu[0])):
             if(tmp_podaz[i] <= tmp_popyt[j] and tmp_podaz[i] != 0):
-                transport_plan[i][j] = tmp_podaz[i]
+                plan_transportu[i][j] = tmp_podaz[i]
                 tmp_popyt[j] = tmp_popyt[j] - tmp_podaz[i]
-                tmp_podaz[i] = tmp_podaz[i] - transport_plan[i][j]
-                break 
+                tmp_podaz[i] = tmp_podaz[i] - plan_transportu[i][j]
+                break  #wyczerpalismy zasoby dostawcy, wiec pomijamy wiersz
             else:
-                transport_plan[i][j] = tmp_popyt[j]
+                plan_transportu[i][j] = tmp_popyt[j]
                 tmp_podaz[i] = tmp_podaz[i] - tmp_popyt[j]
-                tmp_popyt[j] = tmp_popyt[j] - transport_plan[i][j]
+                tmp_popyt[j] = tmp_popyt[j] - plan_transportu[i][j]
 
     print("Transport:")
-    print(transport_plan)
-    print("Popyt:")
-    print(tmp_popyt)
-    print("Podaz:")
-    print(tmp_podaz)
+    print(plan_transportu)
 
-    koszt_transportu = 0
+    print(f'Koszt transportu: {transport_cost(koszty_transportu, plan_transportu)}')
 
-    for i in range(len(koszty_transportu)):
-        for j in range(len(koszty_transportu[0])):
-            koszt_transportu = koszt_transportu + (koszty_transportu[i][j] * transport_plan[i][j])
-
-    print(f'Koszt transportu: {koszt_transportu}')
-
-    alfa = np.zeros(len(koszty_transportu))
-    beta = np.zeros(len(koszty_transportu[0]))
-
-
+    optimal_solution(koszty_transportu, plan_transportu)
+    
 
 def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
     print("dupa")
@@ -109,10 +142,13 @@ def main():
     podaz = ([int(50),int(70),int(30)])
     popyt = ([int(20),int(40),int(90)])
 
+    print("Jednostkowe koszty transportu:")
     print(koszty_transportu)
     # print(ceny_sprzedazy)
     # print(koszty_zakupu)
+    print("Podaz:")
     print(podaz)
+    print("Popyt:")
     print(popyt)
 
     if(task_check(podaz,popyt) == 1):
