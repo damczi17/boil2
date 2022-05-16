@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def transport_cost(koszty_transportu, plan_transportu):
     koszt_transportu = 0
 
@@ -13,7 +12,7 @@ def transport_cost(koszty_transportu, plan_transportu):
 
 def equation_solve(alfa, i, beta, j, koszty_transportu):
     if(alfa[i] == 0):
-        alfa[i] = -1*(beta[j] + koszty_transportu)
+        alfa[i] = -1 * (beta[j] + koszty_transportu)
     if(beta[j] == 0):
         beta[j] = -1 * (alfa[i] + koszty_transportu)
     
@@ -46,26 +45,62 @@ def optimal_solution(koszty_transportu, plan_transportu):
     print(wskazniki_optymalnosci)
 
 
-def transport_plan(koszty_transportu, podaz, popyt):
-    plan_transportu = np.zeros((len(koszty_transportu), len(koszty_transportu[0])))
+def array_modify(arr1, i, arr2, j, plan_transportu, a, b):
+    plan_transportu[a][b] = arr2[j]
+    arr1[i] = arr1[i] - arr2[j] 
+    arr2[j] = arr2[j] - plan_transportu[a][b]
+
+
+def index_return(maciez_zyskow, a, popyt, podaz):
+    if(podaz[a] == 0):
+        return -1
+    if(a < len(maciez_zyskow)-1):
+        tab = sorted(maciez_zyskow[a][:-1], reverse=True)
+        for i in range(len(tab)):
+            for j, k in enumerate(maciez_zyskow[a]):
+                if k == tab[i]:
+                    index = j
+            if(popyt[index] != 0):
+                return int(index)
+    else:
+        return -2
+        
+
+def transport_plan(maciez_zyskow, podaz, popyt):
+    
+    plan_transportu = np.zeros((len(maciez_zyskow), len(maciez_zyskow[0])))
     tmp_podaz, tmp_popyt = podaz, popyt
 
-    for i in range(len(koszty_transportu)):
-        for j in range(len(koszty_transportu[i])):
-            if(tmp_podaz[i] <= tmp_popyt[j] and tmp_podaz[i] != 0):
-                plan_transportu[i][j] = tmp_podaz[i]
-                tmp_popyt[j] = tmp_popyt[j] - tmp_podaz[i]
-                tmp_podaz[i] = tmp_podaz[i] - plan_transportu[i][j]
-                break  #wyczerpalismy zasoby dostawcy, wiec pomijamy wiersz
-            else:
-                plan_transportu[i][j] = tmp_popyt[j]
-                tmp_podaz[i] = tmp_podaz[i] - tmp_popyt[j]
-                tmp_popyt[j] = tmp_popyt[j] - plan_transportu[i][j]
 
+    for i in range(len(maciez_zyskow)):
+        for j in range(len(maciez_zyskow[i])):
+            index = index_return(maciez_zyskow, i, tmp_popyt, tmp_podaz)
+            if(index == -2):
+                index = j
+            if(index == -1):
+                break
+            else:
+                if(tmp_podaz[i] <= tmp_popyt[index]):
+                    array_modify(tmp_popyt, index, tmp_podaz, i, plan_transportu, i, index)
+                else:
+                    array_modify(tmp_podaz, i, tmp_popyt, index, plan_transportu, i, index)
+
+    print("Podaz:")
+    print(tmp_podaz)
+    print("Popyt:")
+    print(tmp_popyt)
     print("Transport:")
     print(plan_transportu)
 
     return plan_transportu
+
+def maciez_zyskow_jednostkowych(koszty_transportu, ceny_sprzedazy, koszty_zakupu):
+    maciez_zyskow = np.zeros((len(koszty_transportu),len(koszty_transportu[0])))
+    for i in range(len(maciez_zyskow)):
+        for j in range(len(maciez_zyskow[i])):
+            maciez_zyskow[i][j] = ceny_sprzedazy[j] - (koszty_zakupu[i] + koszty_transportu[i][j])
+    # print(maciez_zyskow)
+    return maciez_zyskow
 
 def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
 
@@ -76,24 +111,25 @@ def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popy
     
 
 def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
-    tmp_koszty_transportu = np.zeros((len(koszty_transportu)+1, len(koszty_transportu[0])+1))
-    podaz.append(sum(popyt))
-    popyt.append(sum(popyt))
+    
+    maciez_zyskow = maciez_zyskow_jednostkowych(koszty_transportu, ceny_sprzedazy, koszty_zakupu)
+    tmp_maciez_zyskow = np.zeros((len(maciez_zyskow)+1, len(maciez_zyskow[0])+1))
+    sum_podaz, sum_popyt = sum(podaz), sum(popyt)
 
-    for i in range(len(tmp_koszty_transportu)):
-        for j in range(len(tmp_koszty_transportu[i])):
-            if(i < len(koszty_transportu) and j < len(koszty_transportu[i])):
-                tmp_koszty_transportu[i][j] = koszty_transportu[i][j]
+    podaz.append(sum_popyt)
+    popyt.append(sum_podaz)
+
+    for i in range(len(tmp_maciez_zyskow)):
+        for j in range(len(tmp_maciez_zyskow[i])):
+            if(i < len(maciez_zyskow) and j < len(maciez_zyskow[i])):
+                tmp_maciez_zyskow[i][j] = maciez_zyskow[i][j]
             else:
-                tmp_koszty_transportu[i][j] = 0
+                tmp_maciez_zyskow[i][j] = 0
     
 
-    plan_transportu = transport_plan(tmp_koszty_transportu, podaz, popyt)
-    print(f'Koszt transportu: {transport_cost(koszty_transportu, plan_transportu)}')
+    plan_transportu = transport_plan(tmp_maciez_zyskow, podaz, popyt)
 
-    optimal_solution(tmp_koszty_transportu, plan_transportu)
-
-
+    # optimal_solution(tmp_koszty_transportu, plan_transportu)
 
 
 def task_check(podaz,popyt):
