@@ -1,7 +1,9 @@
-from issue_run import start
+from mainWindow import *
+
+
 
 def main():
-    start()
+    mainWindow()
 
 
 if __name__ == "__main__":

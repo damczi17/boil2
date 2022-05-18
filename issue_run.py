@@ -3,11 +3,11 @@ from task_check import task_check
 from issue_solve import *
 
 
-def start():
+def start(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
     
     # koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt = balanced()
 
-    koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt = unbalanced()
+    # koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt = unbalanced()
 
     print("Jednostkowe koszty transportu:")
     print(koszty_transportu)
