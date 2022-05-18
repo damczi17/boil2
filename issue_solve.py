@@ -30,10 +30,10 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     print(tmp_maciez_zyskow)
     print("Optymalne:")
 
-    #parametr = False
-    #while(parametr == True):
-    #plan_transportu, parametr = optimal_solution(tmp_maciez_zyskow, plan_transportu)
-    plan_transportu = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+    parametr = False
+    while(parametr == True):
+        plan_transportu, parametr = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+    #plan_transportu = optimal_solution(tmp_maciez_zyskow, plan_transportu)
     print(plan_transportu)
 
     # ZC = Zysk całkowity

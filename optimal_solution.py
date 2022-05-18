@@ -33,9 +33,9 @@ def optimal_solution(maciez_zyskow, plan_transportu):
     print(wskazniki_optymalnosci)
 
     if(np.amax(wskazniki_optymalnosci) <= 0):
-        return plan_transportu
+        return plan_transportu, True
 
-    return profit_maximization(plan_transportu, wskazniki_optymalnosci)
+    return profit_maximization(plan_transportu, wskazniki_optymalnosci), False
 
 
 
