@@ -2,15 +2,12 @@ from optimal_solution import optimal_solution
 from transport_plan import transport_plan
 from calculation import *
 
-
 def balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
 
-    plan_transportu = transport_plan(koszty_transportu, podaz,popyt)
-    print(f'Koszt transportu: {transport_cost(koszty_transportu, plan_transportu)}')
+    print(f'Zadanie zbilansowane, nie było w poleceniu')
+    exit(1)
 
-    optimal_solution(koszty_transportu, plan_transportu)
     
-
 def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
     
     maciez_zyskow = maciez_zyskow_jednostkowych(koszty_transportu, ceny_sprzedazy, koszty_zakupu)
@@ -29,5 +26,19 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     
 
     plan_transportu = transport_plan(tmp_maciez_zyskow, podaz, popyt)
+    print(plan_transportu)
+    print(tmp_maciez_zyskow)
+    print("Optymalne:")
 
-    # optimal_solution(tmp_koszty_transportu, plan_transportu)
+    #parametr = False
+    #while(parametr == True):
+    #plan_transportu, parametr = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+    plan_transportu = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+    print(plan_transportu)
+
+    # ZC = Zysk całkowity
+    # KT = Koszt transportu
+    # KZ = Koszt zakupu
+    # PC = Przychód całkowity
+    
+    ZC,KT, KZ, PC = results(tmp_maciez_zyskow,plan_transportu, koszty_transportu, koszty_zakupu, ceny_sprzedazy)

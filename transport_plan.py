@@ -39,11 +39,11 @@ def transport_plan(maciez_zyskow, podaz, popyt):
                 else:
                     array_modify(tmp_podaz, i, tmp_popyt, index, plan_transportu, i, index)
 
-    print("Podaz:")
-    print(tmp_podaz)
-    print("Popyt:")
-    print(tmp_popyt)
-    print("Transport:")
-    print(plan_transportu)
+    # print("Podaz:")
+    # print(tmp_podaz)
+    # print("Popyt:")
+    # print(tmp_popyt)
+    # print("Transport:")
+    # print(plan_transportu)
 
     return plan_transportu
