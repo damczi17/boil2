@@ -14,8 +14,11 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     tmp_maciez_zyskow = np.zeros((len(maciez_zyskow)+1, len(maciez_zyskow[0])+1))
     sum_podaz, sum_popyt = sum(podaz), sum(popyt)
 
-    podaz.append(sum_popyt)
-    popyt.append(sum_podaz)
+    np.append(podaz, sum_popyt)
+    np.append(popyt, sum_podaz)
+
+    #podaz.append(sum_popyt)
+    #popyt.append(sum_podaz)
 
     for i in range(len(tmp_maciez_zyskow)):
         for j in range(len(tmp_maciez_zyskow[i])):
