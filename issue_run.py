@@ -27,5 +27,7 @@ def start(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt):
 
     if(task_check(podaz,popyt) == 1):
         balanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt)
+        return 0,0,0,0
     else:
-        unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt)
+        result = unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, popyt)
+        return result

@@ -73,11 +73,11 @@ def mainWindow():
             transportCostsArray = np.reshape(tempArray, (int(numberOfSuppliers), int(numberOfCustomers)))
             print(transportCostsArray)
 
-            start(transportCostsArray, customersPurchasingPriceArray, suppliersSellingPriceArray, suppliersSupplyArray, customersDemandArray)
+            ZC,KT,KZ,PC = start(transportCostsArray, customersPurchasingPriceArray, suppliersSellingPriceArray, suppliersSupplyArray, customersDemandArray)
 
-            totalCost = 0
-            revenue = 0
-            middlemansProfit = 0
+            totalCost = KT
+            revenue = PC
+            middlemansProfit = ZC
 
             resultsWindow = Tk()
             resultsWindow.resizable(width=False, height=False)

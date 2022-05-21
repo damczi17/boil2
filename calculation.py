@@ -43,4 +43,6 @@ def results(maciez_zyskow, plan_transportu, koszty_transportu, koszty_zakupu, ce
     print(KZ)
     print(PC)
 
-    return ZC,KT,KZ,PC
+    result = np.array([ZC,KT,KZ,PC])
+
+    return result

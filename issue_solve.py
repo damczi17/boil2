@@ -14,9 +14,8 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     tmp_maciez_zyskow = np.zeros((len(maciez_zyskow)+1, len(maciez_zyskow[0])+1))
     sum_podaz, sum_popyt = sum(podaz), sum(popyt)
 
-    np.append(podaz, sum_popyt)
-    np.append(popyt, sum_podaz)
-
+    podaz = np.append(podaz, sum_popyt)
+    popyt = np.append(popyt, sum_podaz)
     #podaz.append(sum_popyt)
     #popyt.append(sum_podaz)
 
@@ -44,4 +43,5 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     # KZ = Koszt zakupu
     # PC = Przychód całkowity
     
-    ZC,KT, KZ, PC = results(tmp_maciez_zyskow,plan_transportu, koszty_transportu, koszty_zakupu, ceny_sprzedazy)
+    result = results(tmp_maciez_zyskow,plan_transportu, koszty_transportu, koszty_zakupu, ceny_sprzedazy)
+    return result
