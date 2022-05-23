@@ -16,6 +16,10 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
 
     podaz = np.append(podaz, sum_popyt)
     popyt = np.append(popyt, sum_podaz)
+
+    print(podaz)
+    print(popyt)
+
     #podaz.append(sum_popyt)
     #popyt.append(sum_podaz)
 
@@ -33,8 +37,9 @@ def unbalanced_issue(koszty_transportu, ceny_sprzedazy, koszty_zakupu, podaz, po
     print("Optymalne:")
 
     parametr = False
-    while(parametr == True):
-        plan_transportu, parametr = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+    while(parametr == False):
+         plan_transportu, parametr = optimal_solution(tmp_maciez_zyskow, plan_transportu)
+
     #plan_transportu = optimal_solution(tmp_maciez_zyskow, plan_transportu)
     print(plan_transportu)
 

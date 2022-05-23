@@ -16,7 +16,6 @@ def optimal_solution(maciez_zyskow, plan_transportu):
                 elif not (math.isnan(alfa[i]) and math.isnan(beta[j])):
                     beta[j] = maciez_zyskow[i][j] - alfa[i]
 
-
     print("Alfa:")
     print(alfa)
     print("Beta:")
@@ -36,6 +35,7 @@ def optimal_solution(maciez_zyskow, plan_transportu):
         return plan_transportu, True
 
     return profit_maximization(plan_transportu, wskazniki_optymalnosci), False
+    #return profit_maximization(plan_transportu, wskazniki_optymalnosci)
 
 
 

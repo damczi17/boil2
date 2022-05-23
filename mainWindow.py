@@ -80,11 +80,11 @@ def mainWindow():
             middlemansProfit = ZC
 
             resultsWindow = Tk()
-            resultsWindow.resizable(width=False, height=False)
+            resultsWindow.resizable(width=True, height=True)
             resultsWindow.title("Results")
             resultsWindow.configure(bg="#fcdec5")
 
-            resultLabel1 = Label(resultsWindow, text='Total cost:\t{}'.format(totalCost), font=("Helvetica,15"))
+            resultLabel1 = Label(resultsWindow, text='Transport cost:\t{}'.format(totalCost), font=("Helvetica,15"))
             resultLabel1.grid(sticky=N, row=0, column=0)
             resultLabel1.configure(fg='black', background="#fcdec5")
 
@@ -96,6 +96,10 @@ def mainWindow():
                                  font=("Helvetica,15"))
             resultLabel3.grid(sticky=N, row=2, column=0)
             resultLabel3.configure(fg='black', background="#fcdec5")
+
+            resultLabel4 = Label(resultsWindow, text='Purchase cost:\t{}'.format(KZ), font=("Helvetica,15"))
+            resultLabel4.grid(sticky=N, row=3, column=0)
+            resultLabel4.configure(fg='black', background="#fcdec5")
 
             resultsWindow.mainloop()
 
